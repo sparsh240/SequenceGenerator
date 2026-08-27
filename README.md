@@ -18,3 +18,6 @@ The goal of this project was to Implement the Decoder-only Transformer Architect
 - Python 3.13.14
 - PyTorch 2.13.0
 
+
+### ( I add notes as comments in the code , Please don't mind , Not Done By AI)
+
