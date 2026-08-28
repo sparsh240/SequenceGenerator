@@ -5,7 +5,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu";
 batch_size = 4;
 context_size = 8;
 
-with open("./Data/data.txt","r",encoding="utf-8") as f:
+with open("./Data/data.txt","r") as f:
   raw_data = f.read();
 
 tokenized_data = torch.tensor(encode(raw_data),dtype=torch.long);

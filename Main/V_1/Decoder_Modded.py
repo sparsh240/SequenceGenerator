@@ -69,10 +69,11 @@ class DecoderLM(nn.Module):
     return logits , loss;
 
   def generate(self, idx , max_new_tokens):
-    # We have to make sure that idx should not be more than context size , so crop the context
-    idx_cropped = idx[: , -dataset.context_size :]
+
 
     for _ in range(max_new_tokens):
+      # We have to make sure that idx should not be more than context size , so crop the context
+      idx_cropped = idx[: , -dataset.context_size :]
       logits , loss = self(idx_cropped);
       logits = logits[: , -1 , :];
       probs = F.softmax(logits , dim = -1);
@@ -99,7 +100,7 @@ class AttentionHead(nn.Module):
     v = self.value(x)
 
 
-    weights = q @ k.transpose(-2, -1) / (T**0.5)
+    weights = q @ k.transpose(-2, -1) / (k.shape[-1]**0.5)
     weights = weights.masked_fill(self.tril[:T,:T] == 0 , float('-inf'))
     weights = F.softmax(weights , dim= -1)
 
@@ -175,11 +176,13 @@ optimizer = torch.optim.AdamW(model.parameters() , lr = 1e-3)
 
 for _ in range(3000):
   xb , yb = dataset.retrive_batch('train')
+  xt , yt = dataset.retrive_batch('test')
   logits , loss = model.forward(xb,yb)
+  _ , loss2 = model.forward(xt,yt)
   optimizer.zero_grad(set_to_none = True)
   loss.backward()
   optimizer.step()
-  print(loss.item())
+  print(loss.item() , loss2.item())
 
 
 
@@ -193,6 +196,8 @@ print(tokenizer.decode(model.generate(idx , max_new_tokens=1000).tolist()[0]))
 
 # More recently the attention is slightly modified and Residual connections and Layer Norm are Added Before attention block processing (pre-norm formulation)
 
-# NOTE - LOSSES ARE LESS BUT THERE SEEMS TO BE A PROBLEM WITH THE GENERATION WILL BE LOOKED AFTER IN V_2
+
 
 # NOTE - Original transformer was built for Machine Translation and used Decoder-Encoder Architecture , but our model here is a type of Decoder-only transformer that generates text based on data.
+
+# Tweek Metaparameters to produce good outputs
