@@ -3,7 +3,7 @@
 This is a sequence generating language model that is trained on a custom dataset and can generate text that is similar to the training data (Stored in ./Data/data.txt) Can be used to Mimic the text style of an Author or User , as long as enough Data is provided.
 
 ## Goal
-The goal of this project was to Implement the Decoder-only Transformer Architecture from the 2017 Paper "Attention is All you Need" from scratch.
+The goal of this mini project was to Implement the Decoder-only Transformer Architecture from the 2017 Paper "Attention is All you Need" from scratch, to Understand The Code Implementation of the Transformer Architecture and Design.
 
 ## Features
 
